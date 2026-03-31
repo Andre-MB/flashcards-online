@@ -1,0 +1,40 @@
+.card-container {
+  perspective: 1000px;
+  width: 60vw;
+  height: 60vh;
+  cursor: grab;
+}
+
+.card {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform 0.4s;
+}
+
+.card.flipped {
+  transform: rotateY(180deg);
+}
+
+.front,
+.back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backface-visibility: hidden;
+  padding: 15px;
+}
+
+.front {
+  background: white;
+}
+
+.back {
+  background: #f0f0f0;
+  transform: rotateY(180deg);
+}

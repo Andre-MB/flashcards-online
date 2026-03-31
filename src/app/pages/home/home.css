@@ -1,0 +1,16 @@
+.decks {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.deck {
+  padding: 10px;
+  border-radius: 8px;
+  background: #f1f1f1;
+  cursor: pointer;
+}
+
+.deck:hover {
+  background: #ddd;
+}

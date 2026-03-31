@@ -1,0 +1,19 @@
+<!-- <h2>Deck {{ deckId }}</h2> -->
+
+@if (!currentCard) {
+  <div class="no-cards">Sem cards disponíveis agora ⏳</div>
+} @else {
+  <div class="study-container">
+    <app-flashcard
+      [question]="currentCard.question"
+      [answer]="currentCard.answer"
+      (answered)="onAnswer($event)"
+    >
+    </app-flashcard>
+
+    <div class="actions">
+      <button (click)="markWrong()">❌</button>
+      <button (click)="markCorrect()">✅</button>
+    </div>
+  </div>
+}

@@ -1,0 +1,18 @@
+<div
+  class="card-container"
+  (mousedown)="startDrag($event)"
+  (mousemove)="onDrag($event)"
+  (mouseup)="endDrag()"
+  (mouseleave)="endDrag()"
+  (click)="flip()"
+>
+  <div class="card" [class.flipped]="flipped" [style.transform]="transform">
+    <div class="front">
+      {{ question }}
+    </div>
+
+    <div class="back">
+      {{ answer }}
+    </div>
+  </div>
+</div>

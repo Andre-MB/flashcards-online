@@ -1,0 +1,15 @@
+<h2>Minhas Pastas</h2>
+
+<mat-accordion>
+  <mat-expansion-panel *ngFor="let folder of folders">
+    <mat-expansion-panel-header>
+      {{ folder.name }}
+    </mat-expansion-panel-header>
+
+    <div class="deck" *ngFor="let deck of folder.decks" (click)="openDeck(deck.id)">
+      📚 {{ deck.name }}
+    </div>
+  </mat-expansion-panel>
+</mat-accordion>
+
+<button (click)="logout()">Sair</button>
