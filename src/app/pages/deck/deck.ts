@@ -2,6 +2,14 @@ import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { FlashcardComponent } from '../../components/flashcard/flashcard';
 
+interface Card {
+  id: number;
+  question: string;
+  answer: string;
+  level: number;
+  nextReview: number;
+}
+
 @Component({
   selector: 'app-deck',
   standalone: true,
@@ -12,120 +20,88 @@ import { FlashcardComponent } from '../../components/flashcard/flashcard';
 export class Deck {
   deckId: string | null = null;
 
-  currentIndex = 0;
-
-  flashcards = [
-    {
-      question: 'O que é JavaScript?',
-      answer: 'Uma linguagem de programação',
-      level: 0,
-      nextReview: Date.now(),
-    },
-    {
-      question: 'O que é Angular?',
-      answer: 'Um framework frontend',
-      level: 0,
-      nextReview: Date.now(),
-    },
+  flashcards: Card[] = [
+    { id: 1, question: 'A', answer: 'Resposta A', level: 0, nextReview: 0 },
+    { id: 2, question: 'B', answer: 'Resposta B', level: 0, nextReview: 0 },
+    { id: 3, question: 'C', answer: 'Resposta C', level: 0, nextReview: 0 },
   ];
 
-  studyQueue: any[] = [];
-
-  wrongCards: any[] = [];
-
-  getDelay(level: number) {
-    const delays = [
-      5000, // 5s
-      15000, // 15s
-      30000, // 30s
-      60000, // 1min
-      300000, // 5min
-    ];
-
-    return delays[level] || 300000;
-  }
+  studyQueue: Card[] = [];
+  reviewQueue: Card[] = [];
+  intervalId: any = null;
 
   constructor(private route: ActivatedRoute) {}
 
   ngOnInit() {
     this.deckId = this.route.snapshot.paramMap.get('id');
-    this.loadAvailableCards();
+    this.studyQueue = [...this.flashcards];
+    this.startReviewLoop();
   }
 
-  loadAvailableCards() {
-    const now = Date.now();
-
-    this.studyQueue = this.flashcards.filter((card) => card.nextReview <= now);
+  get currentCard(): Card | null {
+    return this.studyQueue.length > 0 ? this.studyQueue[0] : null;
   }
 
-  get currentCard() {
-    return this.studyQueue[0];
+  getWrongDelay() {
+    return 5000;
   }
 
-  get availableCards() {
-    const now = Date.now();
-    return this.flashcards.filter((c) => c.nextReview <= now);
+  getCorrectDelay(level: number) {
+    const delays = [10000, 30000, 60000, 300000];
+    return delays[level] || 300000;
   }
-
-  // markWrong() {
-  //   const card = this.studyQueue.shift(); // tira da frente
-
-  //   if (card) {
-  //     this.studyQueue.push(card); // volta pro final
-  //   }
-  // }
 
   markWrong() {
     const card = this.currentCard;
+    if (!card) return;
 
     card.level = 0;
-    card.nextReview = Date.now() + 5000;
+    card.nextReview = Date.now() + this.getWrongDelay();
 
-    this.removeFromQueue();
+    this.studyQueue.shift();
+    this.studyQueue.push(card);
+
+    if (!this.reviewQueue.find((c) => c.id === card.id)) {
+      this.reviewQueue.push(card);
+    }
   }
-
-  // markCorrect() {
-  //   this.studyQueue.shift();
-  // }
 
   markCorrect() {
     const card = this.currentCard;
+    if (!card) return;
 
     card.level++;
-    card.nextReview = Date.now() + this.getDelay(card.level);
+    card.nextReview = Date.now() + this.getCorrectDelay(card.level);
 
-    this.removeFromQueue();
-  }
-
-  removeFromQueue() {
     this.studyQueue.shift();
 
-    if (this.studyQueue.length === 0) {
-      this.waitForNextCards();
+    if (!this.reviewQueue.find((c) => c.id === card.id)) {
+      this.reviewQueue.push(card);
     }
   }
 
-  waitForNextCards() {
-    setTimeout(() => {
-      this.loadAvailableCards();
-    }, 1000);
+  startReviewLoop() {
+    if (this.intervalId) return;
+
+    this.intervalId = setInterval(() => {
+      this.checkReviewQueue();
+    }, 300);
   }
 
-  nextCard() {
-    if (this.currentIndex < this.flashcards.length - 1) {
-      this.currentIndex++;
-    } else {
-      alert('Terminou o deck!');
+  checkReviewQueue() {
+    const now = Date.now();
+
+    for (let i = 0; i < this.reviewQueue.length; i++) {
+      const card = this.reviewQueue[i];
+
+      if (card.nextReview <= now) {
+        this.studyQueue = this.studyQueue.filter((c) => c.id !== card.id);
+        this.studyQueue.splice(1, 0, card);
+        this.reviewQueue.splice(i, 1);
+        i--;
+      }
     }
   }
-
-  // onAnswer(result: 'correct' | 'wrong') {
-  //   if (result === 'wrong') {
-  //     this.markWrong();
-  //   } else {
-  //     this.markCorrect();
-  //   }
-  // }
 
   onAnswer(result: 'correct' | 'wrong') {
     if (result === 'wrong') {
@@ -133,8 +109,5 @@ export class Deck {
     } else {
       this.markCorrect();
     }
-  }
-  isFinished() {
-    return this.studyQueue.length === 0;
   }
 }
