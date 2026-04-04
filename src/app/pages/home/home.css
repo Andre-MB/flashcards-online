@@ -131,13 +131,15 @@ button:active {
 }
 
 .folder-header::after {
-  content: '▼';
-  font-size: 1.2em;
+  content: '›';
+  font-size: 2em;
+  margin-right: 20px;
+  transform: rotate(90deg);
   transition: transform 0.3s;
 }
 
 .folder-header.open::after {
-  transform: rotate(-180deg);
+  transform: rotate(-90deg);
 }
 
 .deck-list {

@@ -74,6 +74,10 @@ export class Home {
     this.router.navigate(['/']);
   }
 
+  goToCreate() {
+    this.router.navigate(['deck/new']);
+  }
+
   selectedDeckId: string | null = null;
   showModal = false;
 
