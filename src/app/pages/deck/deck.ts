@@ -30,12 +30,70 @@ export class Deck {
   reviewQueue: Card[] = [];
   intervalId: any = null;
 
-  constructor(private route: ActivatedRoute) {}
+  mode: 'time' | 'queue' | 'memory' = 'time';
 
   ngOnInit() {
     this.deckId = this.route.snapshot.paramMap.get('id');
-    this.studyQueue = [...this.flashcards];
-    this.startReviewLoop();
+
+    this.route.queryParams.subscribe((params) => {
+      this.mode = params['mode'] || 'time';
+      this.initMode();
+    });
+  }
+
+  constructor(private route: ActivatedRoute) {}
+
+  // ngOnInit() {
+  //   this.deckId = this.route.snapshot.paramMap.get('id');
+  //   this.studyQueue = [...this.flashcards];
+  //   this.startReviewLoop();
+  // }
+
+  initMode() {
+    if (this.mode === 'time') {
+      this.studyQueue = [...this.flashcards];
+      this.startReviewLoop();
+    }
+
+    if (this.mode === 'queue') {
+      this.studyQueue = [...this.flashcards];
+    }
+
+    if (this.mode === 'memory') {
+      this.initMemoryGame();
+    }
+  }
+
+  memoryCards: any[] = [];
+  selectedCards: any[] = [];
+
+  initMemoryGame() {
+    const duplicated = this.flashcards.flatMap((card) => [
+      { ...card, type: 'q' },
+      { ...card, type: 'a' },
+    ]);
+
+    this.memoryCards = duplicated.sort(() => Math.random() - 0.5);
+  }
+
+  selectMemoryCard(card: any) {
+    if (this.selectedCards.length === 2) return;
+
+    card.flipped = true;
+    this.selectedCards.push(card);
+
+    if (this.selectedCards.length === 2) {
+      setTimeout(() => {
+        const [a, b] = this.selectedCards;
+
+        if (a.id !== b.id) {
+          a.flipped = false;
+          b.flipped = false;
+        }
+
+        this.selectedCards = [];
+      }, 800);
+    }
   }
 
   get currentCard(): Card | null {
@@ -52,6 +110,15 @@ export class Deck {
   }
 
   markWrong() {
+    if (this.mode === 'queue') {
+      const card = this.currentCard;
+      if (!card) return;
+
+      this.studyQueue.shift();
+      this.studyQueue.push(card);
+      return;
+    }
+
     const card = this.currentCard;
     if (!card) return;
 

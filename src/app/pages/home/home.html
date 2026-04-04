@@ -1,15 +1,36 @@
-<h2>Minhas Pastas</h2>
+<div class="count">
+  <div class="decks">
+    <div class="top">
+      <h2>Decks</h2>
 
-<mat-accordion>
-  <mat-expansion-panel *ngFor="let folder of folders">
-    <mat-expansion-panel-header>
-      {{ folder.name }}
-    </mat-expansion-panel-header>
-
-    <div class="deck" *ngFor="let deck of folder.decks" (click)="openDeck(deck.id)">
-      📚 {{ deck.name }}
+      <div class="button-top">
+        <button class="but" (click)="showModal = true">Novo Deck</button>
+        <button class="but">Importar Deck</button>
+      </div>
     </div>
-  </mat-expansion-panel>
-</mat-accordion>
+    @for (folder of folders; track folder.name) {
+      <div class="folder">
+        <div class="folder-header" (click)="toggleFolder(folder)">
+          {{ folder.name }}
+        </div>
 
-<button (click)="logout()">Sair</button>
+        @if (folder.open) {
+          <div class="deck-list">
+            @for (deck of folder.decks; track deck.id) {
+              <div class="deck" (click)="openDeck(deck.id)">
+                {{ deck.name }}
+              </div>
+            }
+          </div>
+        }
+      </div>
+    }
+  </div>
+</div>
+
+@if (showModal) {
+  <div class="modal" (click)="closeModal()">
+    <app-mode-modal (selected)="onModeSelected($event)" (click)="$event.stopPropagation()">
+    </app-mode-modal>
+  </div>
+}

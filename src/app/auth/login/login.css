@@ -1,7 +1,129 @@
+.count {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 18px;
+  font-weight: bold;
+  color: #333;
+  background-color: #333;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+}
+/*
 .login-container {
-  width: 300px;
+  width: 450px;
   margin: 100px auto;
   display: flex;
   flex-direction: column;
   gap: 10px;
+  padding: 50px;
+  border-radius: 30px;
+} */
+
+.container {
+  position: relative;
+  width: 450px;
+  height: 675px;
+}
+
+.card {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 20px;
+  background: #2fa4a9;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.431);
+}
+
+.card-3 {
+  background: #56cfd1;
+  transform: translateX(60px) rotate(15deg) translate(40px, 20px);
+}
+
+/* Card do meio */
+.card-2 {
+  background: #3bbdc0;
+  transform: translateX(30px) rotate(7deg) translate(20px, 10px);
+}
+
+.login-container {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  text-align: center;
+  color: white;
+}
+
+/* Título */
+.login-container h2 {
+  margin-bottom: 20px;
+  font-size: 24px;
+}
+
+/* Form */
+.login-container form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+/* Inputs */
+.login-container input {
+  width: 100%;
+  padding: 12px 15px;
+  border: none;
+  border-radius: 10px;
+  outline: none;
+  font-size: 14px;
+
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+  backdrop-filter: blur(5px);
+}
+
+/* Placeholder */
+.login-container input::placeholder {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+/* Focus */
+.login-container input:focus {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+/* Botão */
+.login-container button {
+  padding: 12px;
+  border: none;
+  border-radius: 10px;
+  background: white;
+  color: #2fa4a9;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+/* Hover botão */
+.login-container button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+a {
+  margin-top: 5px;
+  color: white;
+  text-decoration: none;
+  font-size: 14px;
+  transition: 0.3s;
+}
+
+p {
+  padding: 0;
+  color: white;
 }
