@@ -2,17 +2,43 @@ import { Component } from '@angular/core';
 import { AuthService } from '../../core/services/auth.service';
 import { Router } from '@angular/router';
 import { MatExpansionModule } from '@angular/material/expansion';
-import { NgFor } from '@angular/common';
 import { ModeModal } from '../../shared/mode-modal/mode-modal';
 import { StudyMode } from '../../types/study-mode';
-// import { trigger, state, style, transition, animate } from '@angular/animations';
+import { trigger, state, style, transition, animate } from '@angular/animations';
+import { bootstrapApplication } from '@angular/platform-browser';
+import { provideAnimations } from '@angular/platform-browser/animations';
+import { App } from '../../app';
+
+bootstrapApplication(App, {
+  providers: [provideAnimations()],
+});
 
 @Component({
   selector: 'app-home',
-  imports: [MatExpansionModule, NgFor, ModeModal],
-
+  imports: [MatExpansionModule, ModeModal],
+  standalone: true,
   templateUrl: './home.html',
-  styleUrl: './home.css',
+  styleUrls: ['./home.css'],
+  animations: [
+    trigger('accordion', [
+      state(
+        'closed',
+        style({
+          height: '0px',
+          opacity: 0,
+          overflow: 'hidden',
+        }),
+      ),
+      state(
+        'open',
+        style({
+          height: '*',
+          opacity: 1,
+        }),
+      ),
+      transition('closed <=> open', [animate('250ms ease-in-out')]),
+    ]),
+  ],
 })
 export class Home {
   folders = [

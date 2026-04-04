@@ -10,19 +10,17 @@
     </div>
     @for (folder of folders; track folder.name) {
       <div class="folder">
-        <div class="folder-header" (click)="toggleFolder(folder)">
+        <div class="folder-header" [class.open]="folder.open" (click)="toggleFolder(folder)">
           {{ folder.name }}
         </div>
 
-        @if (folder.open) {
-          <div class="deck-list">
-            @for (deck of folder.decks; track deck.id) {
-              <div class="deck" (click)="openDeck(deck.id)">
-                {{ deck.name }}
-              </div>
-            }
-          </div>
-        }
+        <div class="deck-list" [@accordion]="folder.open ? 'open' : 'closed'">
+          @for (deck of folder.decks; track deck.id) {
+            <div class="deck" (click)="openDeck(deck.id)">
+              {{ deck.name }}
+            </div>
+          }
+        </div>
       </div>
     }
   </div>
