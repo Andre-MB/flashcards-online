@@ -1,0 +1,82 @@
+.count {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 18px;
+  font-weight: bold;
+  color: #333;
+  background-color: #333;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+  font-family: Lato, sans-serif;
+}
+
+h2 {
+  color: white;
+  padding-top: 10px;
+}
+
+h3 {
+  color: white;
+  padding-top: 10px;
+}
+
+.newDeck {
+  width: 60%;
+  height: min(80vh);
+  display: flex;
+  padding: 20px;
+  border-radius: 20px;
+  flex-direction: column;
+  background-color: #2fa4a9;
+  box-shadow: 0 10px 20px rgba(255, 255, 255, 0.2);
+}
+
+.newDeck input {
+  width: 100%;
+  padding: 12px 15px;
+  border: none;
+  border-radius: 10px;
+  outline: none;
+  font-size: 14px;
+
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+  backdrop-filter: blur(5px);
+}
+
+/* Placeholder */
+.newDeck input::placeholder {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+/* Focus */
+.newDeck input:focus {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.newDeck select {
+  width: 100%;
+  padding: 12px 15px;
+  border: none;
+  border-radius: 10px;
+  outline: none;
+  font-size: 14px;
+
+  background: rgba(255, 255, 255, 0.2);
+  color: rgb(255, 255, 255);
+  backdrop-filter: blur(5px);
+}
+
+.newDeck option {
+  background: #2fa4a9;
+  color: rgb(255, 255, 255);
+  text-decoration: none;
+}
+
+.newDeck select.decorated option:hover {
+  box-shadow: 0 0 10px 100px #1882a8 inset;
+  background-color: #1882a8;
+}

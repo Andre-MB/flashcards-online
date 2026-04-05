@@ -1,25 +1,33 @@
-<div class="container">
-  <h2>Criar Novo Deck</h2>
+<div class="count">
+  <div class="newDeck">
+    <h2>Criar Novo Deck</h2>
 
-  <input type="text" placeholder="Nome do Deck" [(ngModel)]="deckName" />
+    <input type="text" placeholder="Nome do Deck" [(ngModel)]="deckName" />
 
-  <input type="text" placeholder="Categoria (ex: Programação)" [(ngModel)]="folderName" />
+    <!-- <input type="select" placeholder="Pasta" [(ngModel)]="folderName" /> -->
 
-  <h3>Flashcards</h3>
+    <select name="folder" [(ngModel)]="folderName">
+      <option value="">Selecione uma Pasta</option>
+      <option value="Programação">Programação</option>
+      <!-- Adicione mais opções conforme necessário -->
+    </select>
 
-  @for (card of cards; track $index) {
-    <div class="card-form">
-      <textarea placeholder="Pergunta" [(ngModel)]="card.question"></textarea>
+    <h3>Flashcards</h3>
 
-      <textarea placeholder="Resposta" [(ngModel)]="card.answer"></textarea>
+    @for (card of cards; track $index) {
+      <div class="card-form">
+        <textarea placeholder="Pergunta" [(ngModel)]="card.question"></textarea>
 
-      <button (click)="removeCard($index)">❌</button>
-    </div>
-  }
+        <textarea placeholder="Resposta" [(ngModel)]="card.answer"></textarea>
 
-  <button (click)="addCard()">➕ Adicionar Card</button>
+        <button (click)="removeCard($index)">❌</button>
+      </div>
+    }
 
-  <hr />
+    <button (click)="addCard()">➕ Adicionar Card</button>
 
-  <button class="save" (click)="save()">💾 Salvar Deck</button>
+    <hr />
+
+    <button class="save" (click)="save()">💾 Salvar Deck</button>
+  </div>
 </div>
