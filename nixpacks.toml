@@ -4,7 +4,11 @@ cmds = ["npm install"]
 [phases.build]
 cmds = [
   "rm -rf .angular",
-  "NODE_OPTIONS=--max-old-space-size=2048 npm run build"
+  "echo '=== DEBUG BUILD ==='",
+  "node -v",
+  "npm -v",
+  "npx ng version",
+  "NODE_OPTIONS=--max-old-space-size=2048 npx ng build --configuration development"
 ]
 
 [start]
