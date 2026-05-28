@@ -1,14 +1,11 @@
 [phases.setup]
-nixPkgs = ["nodejs_20"]
-
-[phases.install]
-cmds = ["npm install"]
+nixPkgs = ["nodejs_22"]
 
 [phases.build]
 cmds = [
-  "rm -rf .angular",
-  "NODE_OPTIONS=--max-old-space-size=2048 npx ng build --configuration development"
+  "npm install",
+  "npx ng build --configuration production"
 ]
 
 [start]
-cmd = "npx serve -s dist"
+cmd = "npx serve -s dist/flashcards/browser -l 3000"
