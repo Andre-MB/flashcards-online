@@ -1,27 +1,44 @@
 <div class="count">
   <div class="decks">
     <div class="top">
-      <h2>Decks</h2>
+      <h2>FlashReview</h2>
 
       <div class="button-top">
-        <button class="but">Nova Pasta</button>
+        <button class="but" (click)="openNewFolderModal()">Nova Pasta</button>
         <button class="but" (click)="goToCreate()">Novo Deck</button>
-        <button class="but">Editar Deck</button>
-        <button class="but">Importar Deck</button>
+        <!-- <button class="but">Editar Deck</button> -->
+        <button class="but" (click)="openImportDeckModal()">Importar Deck</button>
+      </div>
+
+      <div class="mobile-navbar">
+        <i class="fui-list" (click)="toggleSidebar()"> </i>
       </div>
     </div>
     @for (folder of folders; track folder.name) {
-      <div class="folder">
-        <div class="folder-header" [class.open]="folder.open" (click)="toggleFolder(folder)">
-          {{ folder.name }}
+      <div class="acc">
+        <div class="folder">
+          <div class="folder-header" [class.open]="folder.open" (click)="toggleFolder(folder)">
+            {{ folder.name }}
+          </div>
+
+          <div class="deck-list" [@accordion]="folder.open ? 'open' : 'closed'">
+            @for (deck of folder.decks; track deck.id) {
+              <div class="div">
+                <div class="deck" (click)="openDeck(deck.id)">
+                  {{ deck.name }}
+                </div>
+                <div class="fui">
+                  <i class="fui-new"></i>
+                  <i class="fui-cross"></i>
+                </div>
+              </div>
+            }
+          </div>
         </div>
 
-        <div class="deck-list" [@accordion]="folder.open ? 'open' : 'closed'">
-          @for (deck of folder.decks; track deck.id) {
-            <div class="deck" (click)="openDeck(deck.id)">
-              {{ deck.name }}
-            </div>
-          }
+        <div class="fuia">
+          <i class="fui-new"></i>
+          <i class="fui-cross"></i>
         </div>
       </div>
     }
@@ -32,5 +49,29 @@
   <div class="modal" (click)="closeModal()">
     <app-mode-modal (selected)="onModeSelected($event)" (click)="$event.stopPropagation()">
     </app-mode-modal>
+  </div>
+}
+
+@if (showModalNewFolder) {
+  <div class="modal" (click)="closeNewFolderModal()">
+    <app-new-folder-modal (click)="$event.stopPropagation()"> </app-new-folder-modal>
+  </div>
+}
+
+@if (showImportDeckModal) {
+  <div class="modal" (click)="closeImportDeckModal()">
+    <app-import-deck-modal (click)="$event.stopPropagation()"> </app-import-deck-modal>
+  </div>
+}
+
+@if (sidebarOpen) {
+  <div class="sidebar-overlay" (click)="toggleSidebar()">
+    <div class="sidebar" (click)="$event.stopPropagation()">
+      <button class="but" (click)="openNewFolderModal()">Nova Pasta</button>
+
+      <button class="but" (click)="goToCreate()">Novo Deck</button>
+
+      <button class="but" (click)="openImportDeckModal()">Importar Deck</button>
+    </div>
   </div>
 }

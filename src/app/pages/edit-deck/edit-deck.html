@@ -1,6 +1,6 @@
 <div class="count">
   <div class="newDeck">
-    <h2>Criar Novo Deck</h2>
+    <h2>Editar Novo Deck</h2>
 
     <input type="text" placeholder="Nome do Deck" [(ngModel)]="deckName" />
 
@@ -17,11 +17,11 @@
     <div class="flashcards">
       @for (card of cards; track $index) {
         <div class="card-form">
-          <textarea maxlength="255" placeholder="Pergunta" [(ngModel)]="card.question"></textarea>
+          <textarea placeholder="Pergunta" [(ngModel)]="card.question"></textarea>
 
-          <textarea maxlength="255" placeholder="Resposta" [(ngModel)]="card.answer"></textarea>
+          <textarea placeholder="Resposta" [(ngModel)]="card.answer"></textarea>
 
-          <button (click)="removeCard($index)"><i class="fui-cross"></i></button>
+          <button (click)="removeCard($index)">❌</button>
         </div>
       }
     </div>

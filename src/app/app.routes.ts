@@ -12,5 +12,6 @@ export const routes: Routes = [
   },
   { path: 'home', component: Home, canActivate: [authGuard] },
   { path: 'deck/new', component: NewDeck, canActivate: [authGuard] },
+  { path: 'deck/edit/:id', component: NewDeck, canActivate: [authGuard] },
   { path: 'deck/:id', component: Deck, canActivate: [authGuard] },
 ];

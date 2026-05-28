@@ -15,7 +15,7 @@
 
 h2 {
   color: white;
-  padding-top: 10px;
+  margin: 0;
 }
 
 .decks {
@@ -114,8 +114,14 @@ button:active {
   gap: 10px;
 }
 
+.acc {
+  display: flex;
+  flex-direction: row;
+}
+
 .folder {
   margin-bottom: 12px;
+  width: 100%;
 }
 
 .folder-header {
@@ -128,6 +134,7 @@ button:active {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  width: 100%;
 }
 
 .folder-header::after {
@@ -142,10 +149,28 @@ button:active {
   transform: rotate(-90deg);
 }
 
+.delpaste {
+  padding: 13px 12px;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  height: max-content;
+  cursor: pointer;
+}
+
 .deck-list {
+  width: 100%;
   margin-top: 6px;
   padding-left: 10px;
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.div {
+  display: flex;
+  align-items: center;
+  gap: 5px;
 }
 
 .deck {
@@ -155,10 +180,44 @@ button:active {
   border-radius: 6px;
   cursor: pointer;
   transition: 0.2s;
+  width: 100%;
 }
 
 .deck:hover {
   background: #ddd;
+}
+
+.fui {
+  display: flex;
+  align-items: center;
+}
+
+.fuia {
+  margin-top: 10px;
+}
+
+.fui-new {
+  padding-left: 5px;
+  font-size: 25px;
+  color: #ffffff;
+}
+
+.fui-cross {
+  padding-left: 5px;
+  font-size: 27px;
+  color: #e72323;
+}
+
+.fui-list {
+  font-size: 25px;
+  color: #ffffff;
+  transition:
+    transform 0.3s,
+    font-size 0.3s;
+}
+
+.fui-list:hover {
+  font-size: 30px;
 }
 
 .modal {
@@ -182,4 +241,57 @@ app-mode-modal {
   height: max-content;
   background-color: #258b8f;
   border-radius: 12px;
+}
+
+.mobile-navbar {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  app-mode-modal {
+    width: 100%;
+  }
+
+  .decks {
+    width: 80%;
+    font-size: 16px;
+  }
+
+  .deck-list {
+    width: 130%;
+  }
+
+  h2 {
+    font-size: 24px;
+  }
+
+  .button-top {
+    display: none;
+  }
+
+  .mobile-navbar {
+    display: flex;
+  }
+
+  .sidebar-overlay {
+    position: fixed;
+    inset: 0;
+
+    background: rgba(0, 0, 0, 0.5);
+
+    z-index: 1000;
+  }
+
+  .sidebar {
+    width: 260px;
+    height: 100%;
+
+    background: #222;
+
+    padding: 20px;
+
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
 }

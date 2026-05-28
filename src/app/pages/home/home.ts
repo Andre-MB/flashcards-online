@@ -8,6 +8,8 @@ import { trigger, state, style, transition, animate } from '@angular/animations'
 import { bootstrapApplication } from '@angular/platform-browser';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { App } from '../../app';
+import { NewFolderModal } from '../../shared/new-folder-modal/new-folder-modal';
+import { ImportDeckModal } from '../../shared/import-deck-modal/import-deck-modal';
 
 bootstrapApplication(App, {
   providers: [provideAnimations()],
@@ -15,7 +17,7 @@ bootstrapApplication(App, {
 
 @Component({
   selector: 'app-home',
-  imports: [MatExpansionModule, ModeModal],
+  imports: [MatExpansionModule, ModeModal, NewFolderModal, ImportDeckModal],
   standalone: true,
   templateUrl: './home.html',
   styleUrls: ['./home.css'],
@@ -69,6 +71,12 @@ export class Home {
     private router: Router,
   ) {}
 
+  sidebarOpen = false;
+
+  toggleSidebar() {
+    this.sidebarOpen = !this.sidebarOpen;
+  }
+
   logout() {
     this.auth.logout();
     this.router.navigate(['/']);
@@ -79,6 +87,7 @@ export class Home {
   }
 
   selectedDeckId: string | null = null;
+
   showModal = false;
 
   openDeck(deckId: string) {
@@ -97,4 +106,41 @@ export class Home {
   closeModal() {
     this.showModal = false;
   }
+
+  showModalNewFolder = false;
+
+  openNewFolderModal() {
+    this.showModalNewFolder = true;
+    if (this.sidebarOpen === true) {
+      this.sidebarOpen = false;
+    }
+  }
+
+  closeNewFolderModal() {
+    this.showModalNewFolder = false;
+  }
+
+  showImportDeckModal = false;
+
+  openImportDeckModal() {
+    this.showImportDeckModal = true;
+    if (this.sidebarOpen === true) {
+      this.sidebarOpen = false;
+    }
+  }
+
+  closeImportDeckModal() {
+    this.showImportDeckModal = false;
+  }
+
+  // onFolderCreated(folderName: string) {
+  //   if (folderName) {
+  //     this.folders.push({
+  //       name: folderName,
+  //       open: false,
+  //       decks: [],
+  //     });
+  //   }
+  //   this.closeNewFolderModal();
+  // }
 }

@@ -1,0 +1,62 @@
+<div class="overlay">
+  <div class="modal">
+    <h2>Importar Deck</h2>
+
+    <p>
+      Para importar um deck evie um arquivo <strong>.xlsx</strong> onde o nome do arquivo vai ser
+      usado como nome do deck, na <strong>coluna A</strong> coloque o que vai ficar na frente do
+      cartão e na <strong>coluna B</strong>
+      coloque a resposta.
+    </p>
+
+    <p>Selecione uma Pasta para armazenar o deck:</p>
+
+    <select name="folder" [(ngModel)]="folderName">
+      <option value="">Selecione uma Pasta</option>
+      <option value="Programação">Programação</option>
+      <!-- Adicione mais opções conforme necessário -->
+    </select>
+
+    <p>Selecione um arquivo para importar:</p>
+
+    @if (!isMobile) {
+      <div
+        class="drop-zone"
+        [class.drag-over]="isDragging"
+        (dragover)="onDragOver($event)"
+        (dragleave)="onDragLeave($event)"
+        (drop)="onDrop($event)"
+        (click)="fileInput.click()"
+      >
+        <input
+          type="file"
+          #fileInput
+          (change)="onFileSelected($event)"
+          accept=".xlsx, .xls"
+          hidden
+        />
+
+        <div class="drop-message">
+          Arraste e solte o arquivo aqui ou
+          <span>clique para selecionar</span>
+        </div>
+      </div>
+    } @else {
+      <div class="mobile-upload">
+        <input
+          type="file"
+          #fileInput
+          (change)="onFileSelected($event)"
+          accept=".xlsx, .xls"
+          hidden
+        />
+
+        <button class="but" (click)="fileInput.click()">Selecionar Arquivo</button>
+      </div>
+    }
+
+    <p id="fileName">Nome do arquivo: {{ fileName }}</p>
+
+    <button class="but" (click)="createFolder()">Importar</button>
+  </div>
+</div>
