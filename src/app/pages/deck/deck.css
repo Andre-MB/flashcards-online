@@ -1,3 +1,7 @@
+body, main, html, .study-container{
+  overflow: hidden; 
+}
+
 .study-container {
   height: 100vh;
   width: 100vw;
@@ -41,7 +45,7 @@ button {
   font-size: 14px;
   transition: 0.2s;
 }
-
+/* 
 button:first-child {
   background: #fd5454;
   color: white;
@@ -50,7 +54,7 @@ button:first-child {
 button:last-child {
   background: #4caf50;
   color: white;
-}
+} */
 
 button:hover {
   transform: scale(1.05);
