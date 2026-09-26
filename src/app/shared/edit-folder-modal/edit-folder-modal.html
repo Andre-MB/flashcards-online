@@ -1,0 +1,9 @@
+<div class="overlay" (click)="close()">
+  <div class="modal" (click)="$event.stopPropagation()">
+    <h2>Editar Pasta</h2>
+
+    <input type="text" placeholder="Novo nome da pasta" [(ngModel)]="folderName" />
+
+    <button class="but" (click)="saveFolder()">Salvar</button>
+  </div>
+</div>

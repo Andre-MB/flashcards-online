@@ -1,19 +1,60 @@
-<!-- <h2>Deck {{ deckId }}</h2> -->
-
-@if (!currentCard) {
+@if (!currentCard && mode !== 'memory') {
   <div class="no-cards">Sem cards disponíveis agora ⏳</div>
 } @else {
-  <div class="study-container">
-    <app-flashcard
-      [question]="currentCard.question"
-      [answer]="currentCard.answer"
-      (answered)="onAnswer($event)"
-    >
-    </app-flashcard>
+  <!-- ===================================== -->
+  <!-- MODOS DE ESTUDO PADRÃO (TIME / QUEUE) -->
+  <!-- ===================================== -->
+  @if (mode !== 'memory') {
+    <div class="study-container">
+      <!-- Adicionado o ? antes do .question e do .answer -->
+      <app-flashcard
+        [question]="currentCard?.question || ''"
+        [answer]="currentCard?.answer || ''"
+        (answered)="onAnswer($event)"
+      >
+      </app-flashcard>
 
-    <div class="actions">
-      <button (click)="markWrong()">❌</button>
-      <button (click)="markCorrect()">✅</button>
+      <div class="actions">
+        <button (click)="markWrong()">❌</button>
+        <button (click)="markCorrect()">✅</button>
+      </div>
     </div>
-  </div>
+  }
+  
+  <!-- ===================================== -->
+  <!-- MODO: JOGO DA MEMÓRIA                   -->
+  <!-- ===================================== -->
+  @if (mode === 'memory') {
+    <div class="memory-container">
+      <h2>Encontre os Pares</h2>
+      <p class="level-counter">{{ currentLevel }} / {{ totalLevels }}</p>
+      
+      <div class="memory-grid">
+        @for (card of memoryCards; track $index) {
+          <!-- O clique aciona a função e a classe 'flipped' roda a animação -->
+          <div 
+            class="memory-card" 
+            [class.flipped]="card.flipped" 
+            (click)="selectMemoryCard(card)">
+            
+            <div class="memory-card-inner">
+              <!-- A parte de trás (capa do jogo) -->
+              <div class="memory-card-back">
+                <i class="fui-star"></i> <!-- Ou coloque um logo / interrogação -->
+              </div>
+              
+              <!-- A parte da frente (texto do flashcard) -->
+              <div class="memory-card-front" [class.question-type]="card.type === 'q'">
+                <!-- Se type for 'q', mostra a pergunta; senão, mostra a resposta -->
+                <p>{{ card.type === 'q' ? card.question : card.answer }}</p>
+              </div>
+            </div>
+          </div>
+        }
+      </div>
+
+      <!-- Botão para reiniciar o jogo quando quiser -->
+      <button class="but restart-btn" (click)="initMemoryGame()">Embaralhar Novamente</button>
+    </div>
+  }
 }

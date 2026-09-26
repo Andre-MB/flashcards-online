@@ -1,0 +1,35 @@
+<div class="count">
+  <div class="container">
+    <div class="card card-3"></div>
+    <div class="card card-2"></div>
+    <div class="card">
+      <div class="login-container">
+        <h2>Criar Conta</h2>
+        
+        <form (ngSubmit)="onRegister()">
+          <!-- Nome -->
+          <input type="text" name="nome" [(ngModel)]="nome" placeholder="Seu Nome Completo" required />
+          
+          <!-- E-mail -->
+          <input type="email" name="email" [(ngModel)]="email" placeholder="Seu E-mail" required />
+          
+          <!-- Senha -->
+          <input type="password" name="senha" [(ngModel)]="senha" placeholder="Senha (mínimo 8 caracteres)" required />
+          
+          <!-- Termos de Aceite -->
+          <div class="checkbox-container">
+            <input type="checkbox" id="termos" name="termoAceite" [(ngModel)]="termoAceite" required />
+            <label for="termos">Li e aceito os termos de uso.</label>
+          </div>
+          
+          <!-- Botão (Só fica ativo se o isFormValid() for true e não estiver a carregar) -->
+          <button type="submit" [disabled]="!isFormValid() || isLoading">
+            {{ isLoading ? 'Criando conta...' : 'Registar' }}
+          </button>
+          
+          <a href="#">Já tem uma conta? Entrar</a>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

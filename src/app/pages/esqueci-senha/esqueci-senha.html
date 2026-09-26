@@ -1,0 +1,20 @@
+<div class="count">
+  <div class="container">
+    <div class="card card-3"></div>
+    <div class="card card-2"></div>
+    <div class="card">
+      <div class="login-container">
+        <h2>Recuperar Senha</h2>
+        <p class="subtitle">Qual é o e-mail da sua conta?</p>
+
+        <form (ngSubmit)="enviarEmail()">
+          <input type="email" name="email" [(ngModel)]="email" placeholder="Seu e-mail" required />
+          <button type="submit" [disabled]="isLoading">
+            {{ isLoading ? 'Enviando...' : 'Enviar Código' }}
+          </button>
+          <a href="#">Voltar ao Login</a>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

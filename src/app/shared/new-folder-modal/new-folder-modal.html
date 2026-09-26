@@ -2,7 +2,7 @@
   <div class="modal">
     <h2>Nova Pasta</h2>
 
-    <input type="text" placeholder="Nome da pasta" />
+    <input type="text" placeholder="Nome da pasta" [(ngModel)]="folderName" />
 
     <button class="but" (click)="createFolder()">Criar</button>
   </div>

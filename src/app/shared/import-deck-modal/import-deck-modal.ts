@@ -1,6 +1,14 @@
-import { Component } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import * as XLSX from 'xlsx';
+import { HttpClient } from '@angular/common/http';
+import { environment } from '../../../environments/environment';
+
+// Interfaces para tipagem
+interface ApiFolder {
+  idPasta: number;
+  nome: string;
+}
 
 @Component({
   selector: 'app-import-deck-modal',
@@ -9,28 +17,38 @@ import * as XLSX from 'xlsx';
   styleUrls: ['./import-deck-modal.css'],
   imports: [FormsModule],
 })
-export class ImportDeckModal {
-  deckName = '';
-  folderName = '';
+export class ImportDeckModal implements OnInit {
+  @Output() imported = new EventEmitter<boolean>(); // Avisa o Home para atualizar ou fechar
 
-  createFolder() {
-    console.log('Importar deck:', this.deckName);
-    console.log('Pasta selecionada:', this.folderName);
-    // depois vamos implementar a lógica de importação do deck
-  }
-
+  // Usamos selectedFolderId em vez de folderName
+  selectedFolderId: number | '' = '';
+  folders: ApiFolder[] = [];
+  
+  fileName: string = '';
+  deckName: string = ''; // Extraído do fileName
+  
+  isDragging = false;
   isMobile = window.innerWidth <= 768;
+
+  // Formato correto para enviar à API
+  flashcardsParaEnviar: { frente: string, verso: string }[] = [];
+
+  constructor(private http: HttpClient, private cdr: ChangeDetectorRef) {}
 
   ngOnInit() {
     window.addEventListener('resize', () => {
       this.isMobile = window.innerWidth <= 768;
     });
+
+    this.carregarPastas();
   }
 
-  fileName: string = '';
-
-  dadosJson: any[] = [];
-  isDragging = false;
+  carregarPastas() {
+    this.http.get<ApiFolder[]>(`${environment.apiUrl}/Pastas`).subscribe({
+      next: (data) => this.folders = data,
+      error: (err) => console.error('Erro ao carregar pastas:', err)
+    });
+  }
 
   // Previne o comportamento padrão do navegador ao arrastar
   onDragOver(event: DragEvent) {
@@ -59,36 +77,79 @@ export class ImportDeckModal {
     this.lerArquivo(file);
   }
 
-  // Processa os arquivos
-  handleFiles(files: FileList) {
-    if (files.length > 0) {
-      const file = files[0];
-      this.fileName = file.name;
-      // Aqui você pode adicionar o serviço para fazer o upload do arquivo
-    }
-  }
-
   // Lê e converte o arquivo
   lerArquivo(file: File) {
     if (!file) return;
 
     this.fileName = file.name;
-    // Aqui você pode adicionar o serviço para fazer o upload do arquivo
+    // Remove a extensão (.xlsx ou .xls) para usar como nome do deck
+    this.deckName = this.fileName.replace(/\.[^/.]+$/, ""); 
 
     const reader = new FileReader();
     reader.onload = (e: any) => {
       const data = new Uint8Array(e.target.result);
       const workbook = XLSX.read(data, { type: 'array' });
 
-      // Pega a primeira planilha do arquivo
       const sheetName = workbook.SheetNames[0];
       const worksheet = workbook.Sheets[sheetName];
 
-      // Converte a planilha para JSON
-      this.dadosJson = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
-      console.log(`${file.name}`, this.dadosJson);
+      // O { header: 1 } retorna um array de arrays: [[colunaA, colunaB], [colunaA, colunaB]]
+      const rows = XLSX.utils.sheet_to_json<any[]>(worksheet, { header: 1 });
+      
+      this.flashcardsParaEnviar = [];
+
+      // Itera pelas linhas a partir da primeira (índice 0)
+      for (const row of rows) {
+        // row[0] é a Coluna A (frente), row[1] é a Coluna B (verso)
+        const frente = row[0] ? String(row[0]).trim() : '';
+        const verso = row[1] ? String(row[1]).trim() : '';
+
+        // Só adiciona se ambas as colunas tiverem conteúdo
+        if (frente && verso) {
+          this.flashcardsParaEnviar.push({ frente, verso });
+        }
+      }
+
+      console.log(`Lidos ${this.flashcardsParaEnviar.length} cartões válidos de ${file.name}`);
+
+      this.cdr.detectChanges();
     };
 
     reader.readAsArrayBuffer(file);
+  }
+
+  importarDeck() {
+    if (this.selectedFolderId === '') {
+      alert('Por favor, selecione uma pasta.');
+      return;
+    }
+
+    if (this.flashcardsParaEnviar.length === 0) {
+      alert('Nenhum flashcard válido encontrado. Certifique-se que o Excel tem conteúdo nas colunas A e B.');
+      return;
+    }
+
+    const payload = {
+      nome: this.deckName,
+      idPasta: Number(this.selectedFolderId),
+      flashcards: this.flashcardsParaEnviar
+    };
+
+    this.http.post(`${environment.apiUrl}/Decks`, payload).subscribe({
+      next: () => {
+        alert('Deck importado com sucesso!');
+        this.imported.emit(true); // Diz ao Home que deu certo
+        this.cdr.detectChanges();
+        this.closeModal()
+      },
+      error: (err) => {
+        console.error('Erro ao importar deck:', err);
+        alert('Ocorreu um erro ao importar.');
+      }
+    });
+  }
+
+  closeModal() {
+    this.imported.emit(false); // Diz ao Home apenas para fechar
   }
 }

@@ -1,0 +1,19 @@
+<div class="count">
+  <div class="container">
+    <div class="card card-3"></div>
+    <div class="card card-2"></div>
+    <div class="card">
+      <div class="login-container">
+        <h2>Código Recebido</h2>
+        <p class="subtitle">Enviamos uma senha temporária para <strong>{{ email }}</strong>.</p>
+
+        <form (ngSubmit)="fazerLoginTemporario()">
+          <!-- Este input fica bloqueado (disabled) -->
+          <input type="email" name="email" [(ngModel)]="email" disabled />
+          <input type="password" name="senha" [(ngModel)]="senhaTemporaria" placeholder="Senha Temporária (do e-mail)" required />
+          <button type="submit">Verificar e Continuar</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

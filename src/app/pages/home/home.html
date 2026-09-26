@@ -1,5 +1,6 @@
 <div class="count">
   <div class="decks">
+    <i class="fui-exit" (click)="logout()"></i>
     <div class="top">
       <h2>FlashReview</h2>
 
@@ -8,6 +9,7 @@
         <button class="but" (click)="goToCreate()">Novo Deck</button>
         <!-- <button class="but">Editar Deck</button> -->
         <button class="but" (click)="openImportDeckModal()">Importar Deck</button>
+        <!-- <button class="but" (click)="logout()">Sair</button> -->
       </div>
 
       <div class="mobile-navbar">
@@ -17,7 +19,7 @@
     @for (folder of folders; track folder.name) {
       <div class="acc">
         <div class="folder">
-          <div class="folder-header" [class.open]="folder.open" (click)="toggleFolder(folder)">
+          <div class="folder-header" [class.open]="folder.open" (click)="toggleFolder(folder); $event.stopPropagation()">
             {{ folder.name }}
           </div>
 
@@ -28,8 +30,8 @@
                   {{ deck.name }}
                 </div>
                 <div class="fui">
-                  <i class="fui-new"></i>
-                  <i class="fui-cross"></i>
+                  <i class="fui-new" (click)="goToEditDeck(deck.id); $event.stopPropagation()"></i>
+                  <i class="fui-cross" (click)="openDeleteDeckModal(deck); $event.stopPropagation()"></i>
                 </div>
               </div>
             }
@@ -37,8 +39,8 @@
         </div>
 
         <div class="fuia">
-          <i class="fui-new"></i>
-          <i class="fui-cross"></i>
+          <i class="fui-new" (click)="openEditFolderModal(folder)"></i>
+          <i class="fui-cross" (click)="openDeleteFolderModal(folder)"></i>
         </div>
       </div>
     }
@@ -54,13 +56,45 @@
 
 @if (showModalNewFolder) {
   <div class="modal" (click)="closeNewFolderModal()">
-    <app-new-folder-modal (click)="$event.stopPropagation()"> </app-new-folder-modal>
+    <!-- Adicionado o (created)="onFolderCreated($event)" -->
+    <app-new-folder-modal 
+      (created)="onFolderCreated($event)" 
+      (click)="$event.stopPropagation()"> 
+    </app-new-folder-modal>
+  </div>
+}
+
+@if (showEditFolderModal) {
+  <div class="modal" (click)="closeEditFolderModal()">
+   <app-edit-folder-modal 
+      [folderName]="folderToEdit.name" 
+      (edited)="onFolderEdited($event)">
+    </app-edit-folder-modal>
+  </div>
+}
+
+@if (showDeleteFolderModal) {
+  <div class="modal" (click)="closeDeleteFolderModal()">
+    <app-delete-folder-modal 
+      [folderName]="folderToDelete.name" 
+      (confirmed)="onFolderDeleted($event)">
+    </app-delete-folder-modal>
+  </div>
+}
+
+@if (showDeleteDeckModal) {
+  <!-- Tem que ser EXATAMENTE igual ao selector do passo 1 -->
+  <div class="modal" (click)="closeDeleteDeckModal()">
+    <app-delete-deck-modal 
+      [deckName]="deckToDelete.name" 
+      (confirmed)="onDeckDeleted($event)">
+    </app-delete-deck-modal>
   </div>
 }
 
 @if (showImportDeckModal) {
   <div class="modal" (click)="closeImportDeckModal()">
-    <app-import-deck-modal (click)="$event.stopPropagation()"> </app-import-deck-modal>
+    <app-import-deck-modal (imported)="onDeckImported($event)"> </app-import-deck-modal>
   </div>
 }
 

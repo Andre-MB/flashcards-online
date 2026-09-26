@@ -4,12 +4,14 @@
 
     <input type="text" placeholder="Nome do Deck" [(ngModel)]="deckName" />
 
-    <!-- <input type="select" placeholder="Pasta" [(ngModel)]="folderName" /> -->
-
-    <select name="folder" [(ngModel)]="folderName">
+    <!-- Select dinâmico populado pela API -->
+    <select name="folder" [(ngModel)]="selectedFolderId">
       <option value="">Selecione uma Pasta</option>
-      <option value="Programação">Programação</option>
-      <!-- Adicione mais opções conforme necessário -->
+      <!-- Itera sobre as pastas vindas do C# -->
+      @for (folder of folders; track folder.idPasta) {
+        <!-- O valor salvo será o ID, mas o utilizador vê o nome -->
+        <option [value]="folder.idPasta">{{ folder.nome }}</option>
+      }
     </select>
 
     <h3>Flashcards</h3>
@@ -18,10 +20,12 @@
       @for (card of cards; track $index) {
         <div class="card-form">
           <textarea maxlength="255" placeholder="Pergunta" [(ngModel)]="card.question"></textarea>
-
           <textarea maxlength="255" placeholder="Resposta" [(ngModel)]="card.answer"></textarea>
-
-          <button (click)="removeCard($index)"><i class="fui-cross"></i></button>
+          
+          <!-- Não mostrar botão remover se só houver 1 cartão -->
+          @if (cards.length > 1) {
+            <button (click)="removeCard($index)"><i class="fui-cross"></i></button>
+          }
         </div>
       }
     </div>

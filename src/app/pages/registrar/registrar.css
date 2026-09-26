@@ -11,16 +11,6 @@
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
   overflow: hidden;
 }
-/*
-.login-container {
-  width: 450px;
-  margin: 100px auto;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  padding: 50px;
-  border-radius: 30px;
-} */
 
 .container {
   position: relative;
@@ -42,7 +32,6 @@
   transform: translateX(60px) rotate(15deg) translate(40px, 20px);
 }
 
-/* Card do meio */
 .card-2 {
   background: #3bbdc0;
   transform: translateX(30px) rotate(7deg) translate(20px, 10px);
@@ -61,8 +50,17 @@
 
 /* Título */
 .login-container h2 {
-  margin-bottom: 20px;
+  margin-bottom: 10px;
   font-size: 24px;
+}
+
+/* Subtítulo (Adicionado para as páginas de recuperação) */
+.subtitle {
+  margin-bottom: 25px;
+  font-size: 15px;
+  font-weight: normal;
+  color: rgba(255, 255, 255, 0.9);
+  line-height: 1.4;
 }
 
 /* Form */
@@ -81,7 +79,6 @@
   border-radius: 10px;
   outline: none;
   font-size: 14px;
-
   background: rgba(255, 255, 255, 0.2);
   color: white;
   backdrop-filter: blur(5px);
@@ -97,7 +94,14 @@
   background: rgba(255, 255, 255, 0.3);
 }
 
-/* Botão */
+/* Input Bloqueado (Para o ecrã login-recuperacao) */
+.login-container input:disabled {
+  background: rgba(0, 0, 0, 0.1);
+  color: rgba(255, 255, 255, 0.5);
+  cursor: not-allowed;
+}
+
+/* Botão Principal */
 .login-container button {
   padding: 12px;
   border: none;
@@ -107,41 +111,13 @@
   font-weight: bold;
   cursor: pointer;
   transition: 0.3s;
-}
-
-/* Hover botão */
-.login-container button:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-}
-/* 
-#google-btn{
-  padding: 12px;
-  border: none;
-  border-radius: 10px;
-  background: white;
-  color: #2fa4a9;
-  font-weight: bold;
-  cursor: pointer;
-  transition: 0.3s;
-} */
-
-/* Seu botão principal já estava assim: */
-.login-container button {
-  padding: 12px;
-  border: none;
-  border-radius: 10px;
-  background: white;
-  color: #2fa4a9;
-  font-weight: bold;
-  cursor: pointer;
-  transition: 0.3s;
-  width: 100%; /* Garante que ocupa a mesma largura do botão normal */
+  width: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 10px; /* Espaço entre o logo e o texto */
+  gap: 10px;
   font-size: 16px;
+  margin-top: 10px;
 }
 
 .login-container button:hover {
@@ -149,31 +125,64 @@
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
 }
 
-/* Opcional: Diferenciar a cor do texto do Google para manter a identidade */
-.login-container button.google-btn {
-  color: #2fa4a9; /* Um cinzento escuro para o texto do Google fica mais limpo */
-}
-
-/* Tamanho do ícone SVG do Google */
-.google-icon {
-  width: 20px;
-  height: 20px;
-}
-
-
-
+/* Links (Como o "Voltar ao Login") */
 a {
-  margin-top: 5px;
+  margin-top: 15px;
   color: white;
   text-decoration: none;
   font-size: 14px;
   transition: 0.3s;
 }
 
+a:hover {
+  text-decoration: underline;
+  color: #e0f7f8;
+}
+
 p {
   padding: 0;
-  padding-bottom: 0;
   margin: 0;
   color: white;
   font-weight: normal;
+}
+
+
+/* ... [COLE AQUI TODO O CSS DO SEU LOGIN COMO NAS OUTRAS TELAS] ... */
+
+/* Estilos específicos para a Checkbox dos Termos */
+.checkbox-container {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 10px;
+  width: 100%;
+  text-align: left;
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+/* Redefine o estilo do input checkbox para não herdar o design dos inputs de texto */
+.checkbox-container input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  padding: 0;
+  margin: 0;
+  cursor: pointer;
+  accent-color: #2fa4a9; /* Cor principal do seu tema para quando estiver checado */
+}
+
+.checkbox-container label {
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.9);
+  cursor: pointer;
+  font-weight: normal;
+}
+
+/* Botão desabilitado */
+.login-container button:disabled {
+  background: rgba(255, 255, 255, 0.5);
+  color: #666;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
 }

@@ -1,0 +1,13 @@
+<div class="overlay" (click)="close()">
+  <div class="modal" (click)="$event.stopPropagation()">
+    <h2>Excluir Deck</h2>
+
+    <p>Você tem certeza que deseja excluir o deck <strong>{{ deckName }}</strong>?</p>
+    <p class="warning">Esta ação excluirá todos os flashcards dentro dele.</p>
+
+    <div class="modal-actions">
+      <button class="but btn" (click)="close()">Cancelar</button>
+      <button class="but btn" (click)="confirmDelete()">Excluir</button>
+    </div>
+  </div>
+</div>

@@ -1,15 +1,15 @@
 <div class="count">
   <div class="newDeck">
-    <h2>Editar Novo Deck</h2>
+    <h2>Editar Deck</h2>
 
     <input type="text" placeholder="Nome do Deck" [(ngModel)]="deckName" />
 
-    <!-- <input type="select" placeholder="Pasta" [(ngModel)]="folderName" /> -->
-
-    <select name="folder" [(ngModel)]="folderName">
+    <!-- Select dinâmico -->
+    <select name="folder" [(ngModel)]="selectedFolderId">
       <option value="">Selecione uma Pasta</option>
-      <option value="Programação">Programação</option>
-      <!-- Adicione mais opções conforme necessário -->
+      @for (folder of folders; track folder.idPasta) {
+        <option [value]="folder.idPasta">{{ folder.nome }}</option>
+      }
     </select>
 
     <h3>Flashcards</h3>
@@ -18,7 +18,6 @@
       @for (card of cards; track $index) {
         <div class="card-form">
           <textarea placeholder="Pergunta" [(ngModel)]="card.question"></textarea>
-
           <textarea placeholder="Resposta" [(ngModel)]="card.answer"></textarea>
 
           <button (click)="removeCard($index)">❌</button>
@@ -29,7 +28,7 @@
     <div class="buttons">
       <div class="">
         <button (click)="addCard()">Adicionar Card</button>
-        <button class="save" (click)="save()">Salvar Deck</button>
+        <button class="save" (click)="save()">Atualizar Deck</button>
       </div>
     </div>
   </div>

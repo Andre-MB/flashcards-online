@@ -11,6 +11,11 @@
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
   overflow: hidden;
   font-family: Lato, sans-serif;
+  z-index: 9999;
+}
+
+i{
+  cursor: pointer;
 }
 
 h2 {
@@ -43,7 +48,7 @@ h2 {
 }
 
 .but {
-  padding: 17px 20px;
+  padding: 10px 10px;
   border-radius: 10px;
   cursor: pointer;
   border: 0;
@@ -171,6 +176,7 @@ button:active {
   display: flex;
   align-items: center;
   gap: 5px;
+  width: auto;
 }
 
 .deck {
@@ -190,6 +196,8 @@ button:active {
 .fui {
   display: flex;
   align-items: center;
+  flex-shrink: 0; /* IMPEDE que os ícones sejam esmagados se o nome do deck for longo */
+  
 }
 
 .fuia {
@@ -214,10 +222,29 @@ button:active {
   transition:
     transform 0.3s,
     font-size 0.3s;
+  flex-shrink: 0;
+  z-index: 10;
 }
 
 .fui-list:hover {
   font-size: 30px;
+}
+
+.fui-exit{
+  position: absolute;
+  bottom: 15px;
+  right: 15px;
+  font-size: 27px;
+  color: #f1f1f1;
+  transition:
+    transform 0.3s,
+    font-size 0.3s;
+}
+
+.fui-exit:hover{
+  font-size: 37px;
+  bottom: 25px;
+  right: 15px;
 }
 
 .modal {
@@ -258,7 +285,7 @@ app-mode-modal {
   }
 
   .deck-list {
-    width: 130%;
+    width: 100%;
   }
 
   h2 {

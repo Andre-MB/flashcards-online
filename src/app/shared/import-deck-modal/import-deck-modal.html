@@ -1,5 +1,5 @@
-<div class="overlay">
-  <div class="modal">
+<div class="overlay" (click)="closeModal()">
+  <div class="modal" (click)="$event.stopPropagation()">
     <h2>Importar Deck</h2>
 
     <p>
@@ -11,10 +11,12 @@
 
     <p>Selecione uma Pasta para armazenar o deck:</p>
 
-    <select name="folder" [(ngModel)]="folderName">
+    <!-- Atualizado para iterar pelas pastas e usar selectedFolderId -->
+    <select name="folder" [(ngModel)]="selectedFolderId">
       <option value="">Selecione uma Pasta</option>
-      <option value="Programação">Programação</option>
-      <!-- Adicione mais opções conforme necessário -->
+      @for (folder of folders; track folder.idPasta) {
+        <option [value]="folder.idPasta">{{ folder.nome }}</option>
+      }
     </select>
 
     <p>Selecione um arquivo para importar:</p>
@@ -55,8 +57,15 @@
       </div>
     }
 
-    <p id="fileName">Nome do arquivo: {{ fileName }}</p>
+    @if (fileName) {
+      <div class="file-info">
+        <p><strong>Arquivo:</strong> {{ fileName }}</p>
+        <p><strong>Nome do Deck:</strong> {{ deckName }}</p>
+        <p><strong>Cartões lidos:</strong> {{ flashcardsParaEnviar.length }}</p>
+      </div>
+    }
 
-    <button class="but" (click)="createFolder()">Importar</button>
+    <button class="but" (click)="importarDeck()">Importar</button>
+    <button class="but btn-cancel" (click)="closeModal()">Cancelar</button>
   </div>
 </div>
