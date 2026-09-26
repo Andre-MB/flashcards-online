@@ -1,4 +1,4 @@
 export const environment = {
   production: false,
-  apiUrl: 'https://localhost:7291/api' // URL LOCAL AQUI
+  apiUrl: 'https://back.flashcards.securitycodesystem.cloud' // URL LOCAL AQUI
 };
